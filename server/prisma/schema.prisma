@@ -7,9 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id   String @id @default(cuid())
-  name String
+enum ConversationMode {
+  chat
+  tool
+  agent
+}
+
+enum MessageRole {
+  user
+  assistant
+  system
+  tool
 }
 
 model User {
@@ -88,29 +96,35 @@ model DeviceCode {
   clientId        String?
   scope           String?
 
+  @@unique([deviceCode])
+  @@unique([userCode])
+  @@index([status])
   @@map("deviceCode")
 }
 
 model Conversation {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   userId    String
   title     String?
-  mode      String   @default("chat") // chat , tool , agent
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  mode      ConversationMode @default(chat)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
 
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages Message[]
+
+  @@index([userId])
+  @@index([userId, mode])
 }
 
 model Message {
-  id             String   @id @default(cuid())
+  id             String      @id @default(cuid())
   conversationId String
-  role           String // user, assistant, system, tool
+  role           MessageRole
   content        String // JSON string for complex content
-  createdAt      DateTime @default(now())
+  createdAt      DateTime    @default(now())
 
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
-  @@index([conversationId])
+  @@index([conversationId, createdAt])
 }

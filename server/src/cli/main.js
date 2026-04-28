@@ -10,43 +10,37 @@ import { Command } from "commander";
 import { login, logout, whoami } from "./commands/auth/login.js";
 import { wakeUp } from "./commands/ai/wakeUp.js";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 async function main() {
-  // Display banner
   console.log(
     chalk.cyan(
-      figlet.textSync("Orbit CLI", {
+      figlet.textSync("Helix", {
         font: "Standard",
         horizontalLayout: "default",
       })
     )
   );
-  console.log(chalk.gray("A Cli based AI tool \n"));
+  console.log(chalk.gray("An AI CLI with device authentication and chat modes\n"));
 
-  const program = new Command("orbit");
+  const program = new Command("helix");
 
   program
     .version("0.0.1")
-    .description("Orbit CLI - Device Flow Authentication");
+    .description("Helix CLI - AI chat and device authentication");
 
-  // Add commands
   program.addCommand(wakeUp);
   program.addCommand(login);
   program.addCommand(logout);
   program.addCommand(whoami);
 
-  // Default action shows help
   program.action(() => {
     program.help();
   });
-
-
-
   program.parse();
 }
 
 main().catch((error) => {
-  console.error(chalk.red("Error running Orbit CLI:"), error);
+  console.error(chalk.red("Error running Helix CLI:"), error);
   process.exit(1);
 });

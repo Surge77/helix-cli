@@ -21,7 +21,7 @@ async function getUserFromToken() {
   const token = await getStoredToken();
 
   if (!token?.access_token) {
-    throw new Error("Not authenticated. Please run 'orbit login' first.");
+    throw new Error("Not authenticated. Please run 'helix login' first.");
   }
 
   const user = await prisma.user.findFirst({
@@ -184,7 +184,7 @@ export async function startAgentChat(conversationId = null) {
   try {
     intro(
       boxen(
-        chalk.bold.magenta("🤖 Orbit AI - Agent Mode\n\n") +
+        chalk.bold.magenta("🤖 Helix AI - Agent Mode\n\n") +
         chalk.gray("Autonomous Application Generator"),
         {
           padding: 1,

@@ -1,30 +1,32 @@
-
 "use client"
-import { LoginForm } from '@/components/login-form'
-import { Spinner } from '@/components/ui/spinner';
-import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
-import React from 'react'
 
-const Page =  () => {
-    const {data , isPending , } = authClient.useSession();
-  const router = useRouter();
-  if(isPending){
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+
+import { LoginForm } from "@/components/login-form"
+import { Spinner } from "@/components/ui/spinner"
+import { authClient } from "@/lib/auth-client"
+
+const Page = () => {
+  const { data, isPending } = authClient.useSession()
+  const router = useRouter()
+  const isAuthenticated = Boolean(data?.session && data?.user)
+
+  useEffect(() => {
+    if (!isPending && isAuthenticated) {
+      router.replace("/")
+    }
+  }, [isAuthenticated, isPending, router])
+
+  if (isPending || isAuthenticated) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-          <Spinner />
+      <div className="flex h-screen items-center justify-center">
+        <Spinner />
       </div>
     )
   }
 
-  if(data?.session && data?.user){
-    router.push("/")
-  }
-  return (
-
-    <LoginForm />
-
-  )
+  return <LoginForm />
 }
 
 export default Page

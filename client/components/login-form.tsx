@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
+import { publicAppConfig } from "@/lib/app-config";
 import { useState } from "react";
 
 export function LoginForm() {
@@ -11,19 +12,22 @@ export function LoginForm() {
 
   const handleGitHubLogin = async () => {
     setIsLoading(true);
-    await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "http://localhost:3000"
-    });
-    setIsLoading(false);
+    try {
+      await authClient.signIn.social({
+        provider: "github",
+        callbackURL: publicAppConfig.webUrl,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="flex flex-col gap-6 justify-center items-center">
       <div className="flex flex-col items-center justify-center space-y-4">
         <Image src={"/login.svg"} alt="Login" height={500} width={500} />
-        <h1 className="text-6xl font-extrabold text-indigo-400">Welcome Back! to Orbital Cli</h1>
-        <p className="text-base font-medium text-zinc-400">Login to your account for allowing device flow</p>
+        <h1 className="text-6xl font-extrabold text-indigo-400">Welcome Back to Helix CLI</h1>
+        <p className="text-base font-medium text-zinc-400">Login to your account to approve device access.</p>
       </div>
       <Card className="border-dashed border-2">
         <CardContent>

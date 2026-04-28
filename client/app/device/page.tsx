@@ -27,7 +27,7 @@ export default function DeviceAuthorizationPage() {
       if (response.data) {
         router.push(`/approve?user_code=${formattedCode}`)
       }
-    } catch (err) {
+    } catch {
       setError("Invalid or expired code")
     } finally {
       setIsLoading(false)

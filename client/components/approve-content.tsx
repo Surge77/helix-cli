@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircle, XCircle, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 
@@ -17,6 +17,13 @@ export default function DeviceApprovalContent() {
     approve: false,
     deny: false,
   });
+  const isAuthenticated = Boolean(data?.session && data?.user);
+
+  useEffect(() => {
+    if (!isPending && !isAuthenticated) {
+      router.replace("/sign-in");
+    }
+  }, [isAuthenticated, isPending, router]);
 
   if (isPending) {
     return (
@@ -26,8 +33,7 @@ export default function DeviceApprovalContent() {
     );
   }
 
-  if (!data?.session && !data?.user) {
-    router.push("/sign-in");
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -38,8 +44,8 @@ export default function DeviceApprovalContent() {
       await authClient.device.approve({ userCode: userCode! });
       toast.dismiss("loading");
       toast.success("Device approved successfully!");
-      router.push("/");
-    } catch (error) {
+      router.replace("/");
+    } catch {
       toast.error("Failed to approve device");
     }
     setIsProcessing({ approve: false, deny: false });
@@ -52,8 +58,8 @@ export default function DeviceApprovalContent() {
       await authClient.device.deny({ userCode: userCode! });
       toast.dismiss("deny");
       toast.success("Oops! Device denied to approve!");
-      router.push("/");
-    } catch (error) {
+      router.replace("/");
+    } catch {
       toast.error("Failed to deny device");
     }
     setIsProcessing({ approve: false, deny: false });
@@ -109,7 +115,7 @@ export default function DeviceApprovalContent() {
           <div className="space-y-3">
             <Button
               onClick={handleApprove}
-              disabled={isProcessing.approve}
+              disabled={isProcessing.approve || !userCode}
               className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isProcessing.approve ? (
@@ -126,7 +132,7 @@ export default function DeviceApprovalContent() {
             </Button>
             <Button
               onClick={handleDeny}
-              disabled={isProcessing.deny}
+              disabled={isProcessing.deny || !userCode}
               className="w-full h-11 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isProcessing.deny ? (

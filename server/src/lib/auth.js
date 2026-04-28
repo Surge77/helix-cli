@@ -2,32 +2,29 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./db.js";
 import { deviceAuthorization } from "better-auth/plugins";
+import { appConfig } from "../config/app.config.js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  baseURL: "http://localhost:3005",
+  baseURL: appConfig.serverUrl,
   basePath: "/api/auth",
-  trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: [appConfig.webUrl],
   plugins: [
     deviceAuthorization({
-      // Optional configuration
-      expiresIn: "30m", // Device code expiration time
-      interval: "5s", // Minimum polling interval
-      
+      expiresIn: "30m",
+      interval: "5s",
     }),
   ],
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      redirectURI: "http://localhost:3005/api/auth/callback/github",
+      redirectURI: `${appConfig.serverUrl}/api/auth/callback/github`,
     },
-  
   },
-
-    logger: {
-        level: "debug"
-    }
+  logger: {
+    level: appConfig.authLogLevel,
+  },
 });

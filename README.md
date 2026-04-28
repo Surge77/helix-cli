@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="./assets/images/orbital-logo.png" alt="Orbital CLI Logo" width="180" height="180">
+  <img src="./assets/images/helix-logo.png" alt="Helix CLI Logo" width="180" height="180">
 </p>
 
-<h1 align="center">🚀 Orbital CLI</h1>
+<h1 align="center">🚀 Helix CLI</h1>
 
 <p align="center">
   <strong>A powerful AI-powered command-line interface with OAuth device flow authentication</strong>
@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <img src="./assets/images/cli-demo.png" alt="Orbital CLI Demo" width="700">
+  <img src="./assets/images/cli-demo.png" alt="Helix CLI Demo" width="700">
 </p>
 
 ---
@@ -42,7 +42,7 @@
 |------|-------------|----------|
 | **💬 Chat Mode** | Simple conversational AI | General questions, brainstorming, explanations |
 | **🛠️ Tool Mode** | AI with integrated tools | Real-time search, code execution, URL analysis |
-| **🤖 Agent Mode** | Autonomous app generator | Generate complete applications from descriptions |
+| **🤖 Agent Mode** | Experimental app generator | Generate complete applications into a safe output directory |
 
 ### 🔐 Secure OAuth Device Flow Authentication
 
@@ -58,7 +58,7 @@
 - **Conversation History** - Persistent chat history stored in database
 - **Tool Calling** - Access to Google Search, Code Execution, and URL Context
 
-### 🏗️ Complete Application Generation (Agent Mode)
+### 🏗️ Experimental Application Generation (Agent Mode)
 
 - Generate **full-stack applications** from natural language descriptions
 - Creates all necessary files and folder structures
@@ -75,7 +75,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                              ORBITAL CLI                                 │
+│                              HELIX CLI                                 │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │  ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐   │
@@ -126,7 +126,7 @@ sequenceDiagram
     participant Browser
     participant GitHub
 
-    User->>CLI: orbital login
+    User->>CLI: helix login
     CLI->>Server: Request device code
     Server-->>CLI: Return device_code + user_code
     CLI->>User: Display verification URL & code
@@ -163,8 +163,8 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/orbital_cli.git
-cd orbital_cli
+git clone https://github.com/yourusername/helix-cli.git
+cd helix-cli
 ```
 
 ### Step 2: Install Dependencies
@@ -185,7 +185,7 @@ npm install
 cd server
 
 # Create database (PostgreSQL)
-createdb orbital_db
+createdb helix_db
 
 # Run Prisma migrations
 npx prisma migrate dev --name init
@@ -199,7 +199,8 @@ npx prisma generate
 Create a `.env` file in the `server` directory:
 
 ```bash
-cp .env.example .env
+cp server/.env.example server/.env
+cp client/.env.example client/.env.local
 ```
 
 Edit the `.env` file with your credentials:
@@ -208,7 +209,7 @@ Edit the `.env` file with your credentials:
 # ========================================
 # Database Configuration
 # ========================================
-DATABASE_URL="postgresql://user:password@localhost:5432/orbital_db"
+DATABASE_URL="postgresql://user:password@localhost:5432/helix_db"
 
 # ========================================
 # GitHub OAuth Configuration
@@ -225,7 +226,7 @@ GITHUB_CLIENT_SECRET="your_github_client_secret"
 GOOGLE_GENERATIVE_AI_API_KEY="your_gemini_api_key"
 
 # Optional: AI Model Selection
-ORBITAI_MODEL="gemini-1.5-flash"
+HELIX_MODEL="gemini-1.5-flash"
 
 # ========================================
 # Environment
@@ -240,7 +241,7 @@ cd server
 npm link
 ```
 
-Now you can use `orbital` command from anywhere!
+Now you can use the `helix` command from anywhere.
 
 ---
 
@@ -270,20 +271,20 @@ npm run dev
 
 ```bash
 # Login with GitHub
-orbital login
+helix login
 
 # Check current user
-orbital whoami
+helix whoami
 
 # Logout
-orbital logout
+helix logout
 ```
 
 #### 🤖 AI Modes
 
 ```bash
 # Start AI interaction
-orbital wakeup
+helix wakeup
 ```
 
 This presents a menu to choose your mode:
@@ -346,6 +347,8 @@ AI with access to powerful tools:
 
 ### Agent Mode
 
+This mode is experimental. It now rejects unsafe output paths and refuses to overwrite existing project files.
+
 Autonomous application generator that creates complete projects:
 
 ```
@@ -378,7 +381,7 @@ npm run dev
 ## 📁 Project Structure
 
 ```
-orbital_cli/
+helix-cli/
 ├── 📁 server/                    # Backend & CLI
 │   ├── 📁 src/
 │   │   ├── 📁 cli/               # CLI application
@@ -514,7 +517,7 @@ Available Gemini models:
 
 Set in `.env`:
 ```env
-ORBITAI_MODEL="gemini-1.5-flash"
+HELIX_MODEL="gemini-1.5-flash"
 ```
 
 ### Tool Configuration
@@ -554,7 +557,6 @@ export const availableTools = [
 |--------|----------|-------------|
 | `ALL` | `/api/auth/*` | Better Auth handlers |
 | `GET` | `/api/me` | Get current session |
-| `GET` | `/api/me/:token` | Validate access token |
 | `GET` | `/device` | Device verification redirect |
 
 ### Session Response
@@ -585,7 +587,7 @@ export const availableTools = [
 Tokens are stored securely in the user's home directory:
 
 ```
-~/.better-auth/token.json
+~/.helix-cli/token.json
 ```
 
 **Contents:**
@@ -644,9 +646,9 @@ cd server
 npm link
 
 # Test commands
-orbital --help
-orbital login
-orbital wakeup
+helix --help
+helix login
+helix wakeup
 ```
 
 ---
@@ -675,7 +677,7 @@ Create a GitHub OAuth App:
 </details>
 
 <details>
-<summary><b>❌ "GOOGLE_API_KEY is not set"</b></summary>
+<summary><b>❌ "GOOGLE_GENERATIVE_AI_API_KEY is not set"</b></summary>
 
 1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
 2. Create an API key
@@ -685,7 +687,7 @@ Create a GitHub OAuth App:
 <details>
 <summary><b>❌ "Device code expired"</b></summary>
 
-The device code expires after 30 minutes. Run `orbital login` again.
+The device code expires after 30 minutes. Run `helix login` again.
 </details>
 
 ---
@@ -715,7 +717,7 @@ The device code expires after 30 minutes. Run `orbital login` again.
 - [x] OAuth Device Flow Authentication
 - [x] Chat Mode with streaming
 - [x] Tool Mode (Google Search, Code Execution)
-- [x] Agent Mode (Application Generator)
+- [x] Agent Mode (Experimental application generator with safe file output)
 - [ ] Multi-turn tool conversations
 - [ ] Image generation support
 - [ ] Voice input/output
@@ -771,10 +773,10 @@ copyright notice and this permission notice appear in all copies.
 ---
 
 <p align="center">
-  <strong>Made with ❤️ by the Orbital CLI Team</strong>
+  <strong>Made with ❤️ by the Helix CLI Team</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/yourusername/orbital_cli/issues">Report Bug</a> •
-  <a href="https://github.com/yourusername/orbital_cli/issues">Request Feature</a>
+  <a href="https://github.com/yourusername/helix-cli/issues">Report Bug</a> •
+  <a href="https://github.com/yourusername/helix-cli/issues">Request Feature</a>
 </p>

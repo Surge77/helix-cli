@@ -1,6 +1,6 @@
-# Contributing to Orbital CLI
+# Contributing to Helix CLI
 
-First off, thank you for considering contributing to Orbital CLI! 🚀
+First off, thank you for considering contributing to Helix CLI! 🚀
 
 ## Table of Contents
 
@@ -22,12 +22,12 @@ This project and everyone participating in it is governed by our commitment to p
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/yourusername/orbital_cli.git
-   cd orbital_cli
+   git clone https://github.com/yourusername/helix-cli.git
+   cd helix-cli
    ```
 3. **Add the upstream remote**:
    ```bash
-   git remote add upstream https://github.com/original/orbital_cli.git
+   git remote add upstream https://github.com/original/helix-cli.git
    ```
 
 ## Development Setup
@@ -202,7 +202,7 @@ When reporting bugs, please include:
 [Clear description of the bug]
 
 ## Steps to Reproduce
-1. Run `orbital login`
+1. Run `helix login`
 2. Select "Chat" mode
 3. Type a message
 4. See error
@@ -216,7 +216,7 @@ When reporting bugs, please include:
 ## Environment
 - OS: Windows 11
 - Node.js: 20.10.0
-- Orbital CLI: 0.0.1
+- Helix CLI: 0.0.1
 
 ## Error Output
 ```

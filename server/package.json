@@ -1,14 +1,16 @@
 {
-  "name": "server",
+  "name": "helix-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "Helix CLI server and command-line runtime",
   "main": "src/index.js",
   "bin": {
-    "orbital": "./src/cli/main.js"
+    "helix": "./src/cli/main.js"
   },
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node --test ./test/*.test.js",
+    "smoke:cli": "node ./src/cli/main.js --help"
   },
   "keywords": [],
   "author": "",
