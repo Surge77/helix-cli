@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./assets/images/helix-logo.png" alt="Helix CLI Logo" width="180" height="180">
-</p>
-
 <h1 align="center">🚀 Helix CLI</h1>
 
 <p align="center">
@@ -24,10 +20,6 @@
   <img src="https://img.shields.io/badge/Express-5.x-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express">
   <img src="https://img.shields.io/badge/Prisma-6.x-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma">
   <img src="https://img.shields.io/badge/Google_Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Google Gemini">
-</p>
-
-<p align="center">
-  <img src="./assets/images/cli-demo.png" alt="Helix CLI Demo" width="700">
 </p>
 
 ---
